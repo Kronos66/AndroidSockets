@@ -1,19 +1,36 @@
 package learn.backgroundservice;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-import com.github.nkzawa.socketio.client.Socket;
+import com.github.nkzawa.emitter.Emitter;
 
 import common.socketFactory.SocketFactory;
 
 public class MainActivity extends AppCompatActivity {
 
     private String TAG = "TEST";
-    private Socket socket;
+    private Activity activity = this;
+
+    private Emitter.Listener onNewMessage = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.d(TAG, "------------------------------------");
+                    Log.d(TAG, args[0].toString());
+                    Log.d(TAG, "------------------------------------");
+                }
+            });
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +39,10 @@ public class MainActivity extends AppCompatActivity {
         SocketFactory socket = new SocketFactory();
         socket.getSocket("http://192.168.43.160:3000");
         socket.connect();
-//        fetchData fetchData = new fetchData();
-//        fetchData.fetch();
+        socket.on("msg", onNewMessage);
+        socket.emit("msg", "Test message");
+        socket.emit("msg", "Test message");
+        socket.emit("msg", "Test message");
     }
 
     @Override
@@ -46,5 +65,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public Activity getActivity() {
+        return activity;
     }
 }

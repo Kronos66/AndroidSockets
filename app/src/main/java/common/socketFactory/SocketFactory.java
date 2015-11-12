@@ -1,7 +1,7 @@
 package common.socketFactory;
 
 
-
+import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
 import com.github.nkzawa.socketio.client.IO;
 
@@ -40,8 +40,8 @@ public class SocketFactory {
         socket.emit(event, message);
     }
 
-    public void on(String event) {
-//        socket.on(event, "");
+    public void on(String event, Emitter.Listener listener) {
+        socket.on(event, listener);
     }
 
 }
