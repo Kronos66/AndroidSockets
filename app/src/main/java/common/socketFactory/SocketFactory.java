@@ -1,13 +1,14 @@
 package common.socketFactory;
 
 
-import com.github.nkzawa.emitter.Emitter;
-import com.github.nkzawa.socketio.client.Socket;
-import com.github.nkzawa.socketio.client.IO;
 
 
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 
 public class SocketFactory {
 
@@ -20,11 +21,7 @@ public class SocketFactory {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        try {
-            socket = IO.socket(uri);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+        socket = IO.socket(uri);
         if (null != socket) {
             return socket;
         } else {

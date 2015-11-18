@@ -8,14 +8,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-import com.github.nkzawa.emitter.Emitter;
 
 import common.socketFactory.SocketFactory;
+import io.socket.emitter.Emitter;
 
 public class MainActivity extends AppCompatActivity {
 
     private String TAG = "TEST";
     private Activity activity = this;
+
 
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
         @Override
@@ -37,12 +38,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SocketFactory socket = new SocketFactory();
-        socket.getSocket("http://192.168.43.160:3000");
+        socket.getSocket("http://192.168.0.108:3000");
         socket.connect();
         socket.on("msg", onNewMessage);
-        socket.emit("msg", "Test message");
-        socket.emit("msg", "Test message");
-        socket.emit("msg", "Test message");
+        socket.emit("msg","Go go shot:)");
     }
 
     @Override
@@ -65,6 +64,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "+++++++++++++++++++++++++++++++++++");
+//        socket.connect();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "-------------------------------------");
+//        socket.connect();
     }
 
     public Activity getActivity() {
